@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotDL Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>SpotDL Music Player</h1>
+    <p>Enter a song name or URL to download:</p>
+    <input type="text" id="songInput" placeholder="Song Name or URL">
+    <button onclick="downloadSong()">Download</button>
+    <div id="status" style="margin-top: 20px; color: green;"></div>
+    <script>
+        function downloadSong() {
+            const songName = document.getElementById('songInput').value;
+            if (!songName) {
+                alert('Please enter a song name or URL!');
+                return;
+            }
+            // Call SpotDL (mockup example)
+            document.getElementById('status').innerText = `Downloading "${songName}"...`;
+            // Integrate backend code here if needed
+        }
+    </script>
+</body>
+</html>
