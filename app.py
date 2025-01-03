@@ -6,6 +6,10 @@ app = Flask(__name__)
 # Set up SpotDL with your credentials
 spotdl = Spotdl(client_id='your-client-id', client_secret='your-client-secret')
 
+@app.route('/')
+def home():
+    return "Welcome to SteveMusic API"
+
 @app.route('/search', methods=['GET'])
 def search():
     try:
@@ -28,4 +32,4 @@ def search():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
