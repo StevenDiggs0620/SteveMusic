@@ -1,40 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpotDL Music Player</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
-        input, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SteveMusic</title>
+  <style>
+    /* Basic styling to make things look cleaner */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      text-align: center;
+    }
+
+    #songInfo {
+      display: none;
+      margin-top: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
-    <h1>SpotDL Music Player</h1>
-    <p>Enter a song name or URL to download:</p>
-    <input type="text" id="songInput" placeholder="Song Name or URL">
-    <button onclick="downloadSong()">Download</button>
-    <div id="status" style="margin-top: 20px; color: green;"></div>
-    <script>
-        function downloadSong() {
-            const songName = document.getElementById('songInput').value;
-            if (!songName) {
-                alert('Please enter a song name or URL!');
-                return;
-            }
-            // Call SpotDL (mockup example)
-            document.getElementById('status').innerText = `Downloading "${songName}"...`;
-            // Integrate backend code here if needed
-        }
-    </script>
+  <h1>Search and Play Music</h1>
+
+  <input type="text" id="songInput" placeholder="Enter song name...">
+  <button onclick="searchSong()">Search</button>
+
+  <div id="songInfo">
+    <h2 id="songTitle"></h2>
+    <p id="songArtist"></p>
+    <p id="lyrics"></p>
+  </div>
+
+  <script>
+    async function searchSong() {
+      const songName = document.getElementById("songInput").value;
+      
+      if (!songName) {
+        alert("Please enter a song name!");
+        return;
+      }
+
+      try {
+        // Fetch the song data from your backend (Render URL)
+        const response = await fetch('https://your-backend-url.onrender.com/search', {
+          method: 'POST',
+          body: JSON.stringify({ song: songName }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await response.json();
+
+        // Display the song info in the UI
+        document.getElementById("songInfo").style.display = "block";
+        document.getElementById("songTitle").innerText = data.title;
+        document.getElementById("songArtist").innerText = data.artist;
+        document.getElementById("lyrics").innerText = data.lyrics;
+      } catch (error) {
+        console.error('Error fetching song data:', error);
+        alert("An error occurred while searching for the song.");
+      }
+    }
+  </script>
 </body>
 </html>
