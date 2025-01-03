@@ -1,21 +1,31 @@
-from spotdl.download.downloader import Downloader
+from spotdl import Spotdl
+from flask import Flask, jsonify
 
-# Test initialization of the Downloader class
-downloader = Downloader(settings={
-    'audio_providers': ['youtube'],
-    'output': './downloads'  # Specify where to store downloaded songs
-})
+app = Flask(__name__)
 
-def search_song(song_name):
+# Set up SpotDL with your credentials
+spotdl = Spotdl(client_id='your-client-id', client_secret='your-client-secret')
+
+@app.route('/search', methods=['GET'])
+def search():
     try:
-        print(f"Searching for song: {song_name}")  # Log the search
-        song = downloader.search(song_name)
-        print(f"Song found: {song}")  # Log the result of the search
-        return song  # Return the result
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")  # Log any errors
-        return str(e)
+        # Replace with actual query or dynamically fetch from request
+        song_query = ['joji - test drive', 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT']
+        songs = spotdl.search(song_query)
 
-if __name__ == '__main__':
-    song = search_song("Never Gonna Give You Up")
-    print(f"Search result: {song}")  # Final output of the search
+        # Ensure the search results are not empty
+        if not songs:
+            return jsonify({'error': 'No songs found'}), 404
+
+        # For now, we'll return the first song and its details
+        song = songs[0]
+        return jsonify({
+            'song_name': song.display_name,
+            'artist': song.artist,
+            'url': song.url
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(debug=True)
