@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from spotdl import SpotDL  # Assuming this imports your SpotDL code
+from spotdl.download.downloader import Downloader
 
 app = Flask(__name__)
 
